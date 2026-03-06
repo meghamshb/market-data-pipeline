@@ -1,2 +1,4 @@
 streamlit==1.55.0
 pyalex==0.21
+psycopg[binary]==3.2.3
+python-dotenv==1.0.1
