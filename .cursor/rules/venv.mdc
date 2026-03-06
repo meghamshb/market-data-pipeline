@@ -1,0 +1,12 @@
+---
+description: Project uses a .venv virtual environment at repo root
+alwaysApply: true
+---
+
+# Virtual environment
+
+There is a `.venv` folder at the root of the codebase containing the project’s Python virtual environment (it may not be visible in the workspace).
+
+- When suggesting or running Python commands, use the venv’s interpreter, e.g. `./.venv/bin/python` or `source .venv/bin/activate` (Unix) / `.venv\Scripts\activate` (Windows).
+- When installing dependencies, use the venv’s pip, e.g. `./.venv/bin/pip install <package>` or run pip after activating the venv.
+- Do not assume a system Python or a different venv path unless the user specifies otherwise.
