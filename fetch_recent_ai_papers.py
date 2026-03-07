@@ -30,7 +30,11 @@ def _get_openalex_id(url_or_id: str) -> str:
     return s
 
 
-def main() -> None:
+def fetch_recent_ai_papers(save_dir: str | None = None) -> list[dict]:
+    """
+    Query OpenAlex for recent AI papers (primary_topic filter + last 3 days).
+    Returns list of work dicts. If save_dir is set, also save JSON there and print path.
+    """
     target = _normalize(AI_TOPIC_NAME)
     field_ids: list[str] = []
     subfield_ids: list[str] = []
@@ -103,13 +107,21 @@ def main() -> None:
 
     print(f"Fetched {len(papers)} paper(s) from {from_str} to {to_str}")
 
-    temp_dir = os.path.join(os.path.dirname(__file__), "temp")
-    os.makedirs(temp_dir, exist_ok=True)
-    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
-    out_path = os.path.join(temp_dir, f"ai_papers_{timestamp}.json")
-    with open(out_path, "w", encoding="utf-8") as f:
-        json.dump(papers, f, ensure_ascii=False, indent=2)
-    print(f"Saved to {out_path}")
+    if save_dir is not None:
+        os.makedirs(save_dir, exist_ok=True)
+        timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+        out_path = os.path.join(save_dir, f"ai_papers_{timestamp}.json")
+        with open(out_path, "w", encoding="utf-8") as f:
+            json.dump(papers, f, ensure_ascii=False, indent=2)
+        print(f"Saved to {out_path}")
+
+    return papers
+
+
+def main() -> None:
+    repo_dir = os.path.dirname(os.path.abspath(__file__))
+    temp_dir = os.path.join(repo_dir, "temp")
+    fetch_recent_ai_papers(save_dir=temp_dir)
 
 
 if __name__ == "__main__":
